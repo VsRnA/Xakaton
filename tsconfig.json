@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "#types/*": ["backend/src/types/*"],
+      "#infrastructure/*": ["backend/src/infrastructure/*"],
+      "#lib/*": ["backend/src/lib/*"],
+      "#app/*": ["backend/src/app/*"],
+      "#errors": ["backend/src/errors/index"],
+      "#schemas/*": ["backend/src/schemas/*"],
+      "#repositories/*": ["backend/src/repositories/*"],
+      "#services/*": ["backend/src/services/*"],
+      "#config": ["backend/src/config"],
+    },
+  },
+  "exclude": ["node_modules"]
+}

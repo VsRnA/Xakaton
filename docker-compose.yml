@@ -1,0 +1,30 @@
+version: '3'
+
+
+services:
+  postgres: 
+    image: postgres:15-alpine
+    container_name: iPostgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: passw0rd
+      POSTGRES_DB: iPostgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iCore
+    ports:
+      - "${HTTP_PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    
+volumes:
+  db_data:
+    name: postgres_data
