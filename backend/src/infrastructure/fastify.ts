@@ -6,5 +6,5 @@ export const httpTransport = new FastifyTransport({
   port: config.http.port,
   host: config.http.host,
   logger: config.http.logger,
-  handlersPath: join(process.cwd(), 'src', 'app')
+  handlersPath: 'backend/src/app'
 });

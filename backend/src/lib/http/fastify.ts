@@ -1,7 +1,7 @@
-import fastify, { FastifyInstance } from "fastify";
+import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { Handler } from "./handler";
-import { readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import { verifyToken } from "#app/auth/services/verifyToken";
+import findUserByGuid from "#app/user/repositories/findByGuid";
 
 export interface FastifyTransportConfig {
   port: number;
@@ -20,40 +20,40 @@ export class FastifyTransport {
     this.#app = fastify({
       logger: this.#config.logger,
     })
+    this.#setupContextMiddleware();
     this.handler = new Handler(this.#app)
   }
 
-  async #loadHandlers(basePath: string) {
-    async function loadDirectory(dir: string) {
-      const entries = readdirSync(dir);
+  #setupContextMiddleware() {
+    this.#app.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+      (request as any).context = {
+        user: await this.#getUserFromRequest(request)
+      };
+    });
+  }
 
-      for (const entry of entries) {
-        const fullPath = join(dir, entry);
-        const stat = statSync(fullPath);
-
-        if (stat.isDirectory() && entry === 'handlers') {
-          const files = readdirSync(fullPath);
-          
-          for (const file of files) {
-            if ((file.endsWith('.ts') || file.endsWith('.js')) && file !== 'index.ts' && file !== 'index.js') {
-              await import(fullPath + '/' + file);
-            }
-          }
-        } else if (stat.isDirectory()) {
-          await loadDirectory(fullPath);
-        }
-      }
+  async #getUserFromRequest(request: FastifyRequest): Promise<any> {
+    const token = request.headers.authorization?.replace('JWT ', '');
+    if (!token) {
+      return null;
     }
 
-    await loadDirectory(basePath);
+    const decoded = await verifyToken(token);
+    
+    // Получаем пользователя из БД по userId из токена
+    const user = await findUserByGuid(decoded.userId);
+    
+    if (!user) {
+      return null;
+    }
+
+    // Возвращаем пользователя без пароля
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async startServer() {
     try {
-      if (this.#config.handlersPath) {
-        await this.#loadHandlers(this.#config.handlersPath);
-      }
-
       await this.#app.listen({
         port: this.#config.port,
         host: this.#config.host,

@@ -3,9 +3,6 @@ import {
   Attributes, CreationAttributes, CreationOptional,
 } from '#infrastructure/db/sequelize';
 import db from '#infrastructure/db/index';
-import Category from '../../category/models/category';
-import Transaction from '../../transaction/models/transaction';
-import Goal from '../../goal/models/goal';
 
 export type UserAttributes = Attributes<User>;
 export type UserCreationAttributes = CreationAttributes<User>;
@@ -63,21 +60,21 @@ User.init({
 });
 
 db.associate(() => {
-  // User -> Categories (один ко многим)
-  User.hasMany(Category, {
-    foreignKey: 'userGuid',
-    as: 'categories',
-  });
+  // // User -> Categories (один ко многим)
+  // User.hasMany(Category, {
+  //   foreignKey: 'userGuid',
+  //   as: 'categories',
+  // });
 
-  // User -> Transactions (один ко многим)
-  User.hasMany(Transaction, {
-    foreignKey: 'userGuid',
-    as: 'transactions',
-  });
+  // // User -> Transactions (один ко многим)
+  // User.hasMany(Transaction, {
+  //   foreignKey: 'userGuid',
+  //   as: 'transactions',
+  // });
 
-  // User -> Goals (один ко многим)
-  User.hasMany(Goal, {
-    foreignKey: 'userGuid',
-    as: 'goals',
-  });
+  // // User -> Goals (один ко многим)
+  // User.hasMany(Goal, {
+  //   foreignKey: 'userGuid',
+  //   as: 'goals',
+  // });
 });

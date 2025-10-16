@@ -35,6 +35,10 @@ export const schema = {
       default: 5432,
       description: 'Порт PostgreSQL',
     },
+    JWT_SECRET: {
+      type: 'string',
+      description: 'JWT secret'
+    }
   },
   required: ['POSTGRES_PASSWORD'],
 } as const;

@@ -6,4 +6,7 @@ export const config = {
     port: env.get('HTTP_PORT'),
     logger: false,
   },
-}
+  jwt: {
+    secret: env.get('JWT_SECRET'),
+  },
+};
