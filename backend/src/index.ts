@@ -25,6 +25,7 @@ import '#app/development/handlers/delete';
 import '#app/role/handlers/create';
 import '#app/role/handlers/get';
 import '#app/role/handlers/list';
+import '#app/role/handlers/update';
 
 import '#app/project/handler/create';
 import '#app/project/handler/get';

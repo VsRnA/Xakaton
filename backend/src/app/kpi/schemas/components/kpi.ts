@@ -22,7 +22,7 @@ export const kpi = {
   factPercent: {
     type: 'number',
     minimum: 0,
-    maximum: 100,
+    maximum: 200,
     description: 'Фактический процент выполнения'
   }
 } as const;
