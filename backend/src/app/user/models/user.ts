@@ -3,21 +3,30 @@ import {
   Attributes, CreationAttributes, CreationOptional,
 } from '#infrastructure/db/sequelize';
 import db from '#infrastructure/db/index';
+import UserRoleAssignment from '#app/userRole/models/userRole';
+import Kpi from '#app/kpi/models/kpi';
+import Competency from '#app/competency/models/competency';
+import DevelopmentPlan from '#app/development/models/development';
+import Role from '#app/role/models/role';
 
 export type UserAttributes = Attributes<User>;
 export type UserCreationAttributes = CreationAttributes<User>;
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   /** UUID пользователя */
-  declare guid: CreationOptional<string>
-  /** Email пользователя*/
+  declare guid: CreationOptional<string>;
+  /** Email пользователя */
   declare email: string;
   /** Hash пароль пользователя */
   declare password: string;
+  /** ID роли */
+  declare roleId: number;
   /** Имя пользователя */
   declare firstName: string;
   /** Фамилия пользователя */
   declare lastName: string;
+  /** GUID менеджера */
+  declare managerGuid: string | null;
   /** Дата создания */
   declare createdAt: CreationOptional<string>;
   /** Дата обновления */
@@ -40,11 +49,20 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  roleId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   firstName: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   lastName: {
     type: DataTypes.STRING,
+    allowNull: true,
+  },
+  managerGuid: {
+    type: DataTypes.UUID,
     allowNull: true,
   },
   createdAt: DataTypes.DATE,
@@ -56,25 +74,47 @@ User.init({
   modelName: 'user',
   paranoid: true,
   timestamps: true,
-  updatedAt: false,
 });
 
 db.associate(() => {
-  // // User -> Categories (один ко многим)
-  // User.hasMany(Category, {
-  //   foreignKey: 'userGuid',
-  //   as: 'categories',
-  // });
+  // User -> Role (многие к одному)
+  User.belongsTo(Role, {
+    foreignKey: 'roleId',
+    as: 'role',
+  });
 
-  // // User -> Transactions (один ко многим)
-  // User.hasMany(Transaction, {
-  //   foreignKey: 'userGuid',
-  //   as: 'transactions',
-  // });
+  // User -> UserRoleAssignment (один ко многим)
+  User.hasMany(UserRoleAssignment, {
+    foreignKey: 'userGuid',
+    as: 'roleAssignments',
+  });
 
-  // // User -> Goals (один ко многим)
-  // User.hasMany(Goal, {
-  //   foreignKey: 'userGuid',
-  //   as: 'goals',
-  // });
+  // User -> Kpi (один ко многим)
+  User.hasMany(Kpi, {
+    foreignKey: 'userGuid',
+    as: 'kpis',
+  });
+
+  // User -> Competency (один ко многим)
+  User.hasMany(Competency, {
+    foreignKey: 'userGuid',
+    as: 'competencies',
+  });
+
+  // User -> DevelopmentPlan (один ко многим)
+  User.hasMany(DevelopmentPlan, {
+    foreignKey: 'userGuid',
+    as: 'developmentPlans',
+  });
+
+  // User -> User (самоссылка: менеджер)
+  User.belongsTo(User, {
+    foreignKey: 'managerGuid',
+    as: 'manager',
+  });
+
+  User.hasMany(User, {
+    foreignKey: 'managerGuid',
+    as: 'subordinates',
+  });
 });

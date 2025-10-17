@@ -1,6 +1,5 @@
 import { FastifyTransport } from "#lib/http/fastify";
 import { config } from "#config";
-import { join } from 'path';
 
 export const httpTransport = new FastifyTransport({
   port: config.http.port,

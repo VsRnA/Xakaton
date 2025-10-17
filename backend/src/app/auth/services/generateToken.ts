@@ -1,9 +1,9 @@
 import { config } from '#config';
 import * as jwt from '#lib/jwt';
 
-export async function generateToken(userId: string): Promise<string> {
+export async function generateToken(userGuid: string): Promise<string> {
   return jwt.sign(
-    { userId },
+    { userGuid },
     config.jwt.secret,
     { expiresIn: '7d' }
   );

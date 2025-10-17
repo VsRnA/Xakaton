@@ -1,5 +1,26 @@
 import { user } from "./components/user";
-import { createdAt } from "#types/sequelizeTimestamps";
+import { createdAt, updatedAt } from "#types/sequelizeTimestamps";
+
+const roleSchema = {
+  type: 'object',
+  properties: {
+    id: { type: 'number' },
+    name: { type: 'string' },
+    keyWord: { type: 'string' }
+  }
+};
+
+const subordinateSchema = {
+  type: 'object',
+  properties: {
+    guid: user.guid,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    roleId: user.roleId,
+    role: roleSchema
+  }
+};
 
 export default {
   params: {
@@ -18,7 +39,15 @@ export default {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        roleId: user.roleId,
+        managerGuid: user.managerGuid,
+        role: roleSchema,
+        subordinates: {
+          type: 'array',
+          items: subordinateSchema
+        },
         createdAt,
+        updatedAt
       }
     },
     404: {

@@ -7,7 +7,6 @@ import { UnauthorizedError } from "#lib/http/errors";
 
 httpTransport.handler.post('/api/auth/v1/login', loginUserSchema, async (req) => {
   const { email, password } = req.body;
-  console.log(email, password);
   const user = await getUser({ email });
   const isPasswordValid = await verifyPassword(password, user.password);
   if (!isPasswordValid) {

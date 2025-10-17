@@ -1,15 +1,17 @@
 import { user } from "./components/user";
-import { createdAt } from "#types/sequelizeTimestamps";
+import { createdAt, updatedAt } from "#types/sequelizeTimestamps";
 
 export default {
   body: {
     type: 'object',
-    required: ['email', 'password', 'firstName', 'lastName'],
+    required: ['email', 'password', 'firstName', 'roleId'],
     properties: {
       email: user.email,
       password: user.password,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
+      roleId: user.roleId,
+      managerGuid: user.managerGuid
     },
     additionalProperties: false
   },
@@ -21,7 +23,10 @@ export default {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        roleId: user.roleId,
+        managerGuid: user.managerGuid,
         createdAt,
+        updatedAt
       }
     },
     400: {

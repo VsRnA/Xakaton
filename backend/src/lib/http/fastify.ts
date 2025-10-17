@@ -1,7 +1,7 @@
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { Handler } from "./handler";
 import { verifyToken } from "#app/auth/services/verifyToken";
-import findUserByGuid from "#app/user/repositories/findByGuid";
+import getUser from "#app/user/repositories/get";
 
 export interface FastifyTransportConfig {
   port: number;
@@ -41,7 +41,7 @@ export class FastifyTransport {
     const decoded = await verifyToken(token);
     
     // Получаем пользователя из БД по userId из токена
-    const user = await findUserByGuid(decoded.userId);
+    const user = await getUser({guid: decoded.userGuid });
     
     if (!user) {
       return null;
