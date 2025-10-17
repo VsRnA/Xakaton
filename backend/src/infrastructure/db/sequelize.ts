@@ -69,7 +69,7 @@ export class SequelizeDB {
         fn(this.instance.models);
       });
       await this.instance.authenticate();
-      // this.instance.sync({ force: true })
+      this.instance.sync({ alter: true })
     } catch (err) {
       err.message += 'Database connection error: ';
       throw err;
