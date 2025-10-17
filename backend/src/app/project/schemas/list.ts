@@ -36,8 +36,15 @@ export default {
   },
   response: {
     200: {
-      type: 'array',
-      items: projectItemSchema
+      type: 'object',
+      properties: {
+        coefficient: { type: 'number' },
+        projects: {
+          type: 'array',
+          items: projectItemSchema
+        }
+      },
+      required: ['coefficient', 'projects']
     },
     400: {
       type: 'object',

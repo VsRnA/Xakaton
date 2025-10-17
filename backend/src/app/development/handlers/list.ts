@@ -7,5 +7,10 @@ httpTransport.handler.get('/api/development/v1/list', DevelopmentPlanListSchema,
 
   const developmentPlans = await getDevelopmentPlanList({ userGuid });
 
-  return developmentPlans;
+  const Coef = developmentPlans.length > 0 && 
+    developmentPlans.every(plan => plan.factPercent >= plan.planPercent) 
+    ? 1 
+    : 0;
+
+  return { Coef, developmentPlans };
 });

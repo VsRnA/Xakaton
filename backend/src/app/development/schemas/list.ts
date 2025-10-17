@@ -36,8 +36,18 @@ export default {
   },
   response: {
     200: {
-      type: 'array',
-      items: developmentPlanItemSchema
+      type: 'object',
+      properties: {
+        Coef: { 
+          type: 'number',
+          description: 'Коэффициент выполнения: 1 если все планы выполнены, иначе 0'
+        },
+        developmentPlans: {
+          type: 'array',
+          items: developmentPlanItemSchema
+        }
+      },
+      required: ['Coef', 'developmentPlans']
     },
     400: {
       type: 'object',

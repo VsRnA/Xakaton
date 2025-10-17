@@ -36,8 +36,15 @@ export default {
   },
   response: {
     200: {
-      type: 'array',
-      items: kpiItemSchema
+      type: 'object',
+      properties: {
+        coefficient: { type: 'number' },
+        statistics: {
+          type: 'array',
+          items: kpiItemSchema
+        }
+      },
+      required: ['coefficient', 'statistics']
     },
     400: {
       type: 'object',
