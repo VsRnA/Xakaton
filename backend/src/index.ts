@@ -19,6 +19,7 @@ import '#app/kpi/handlers/update';
 
 import '#app/development/handlers/list';
 import '#app/development/handlers/create';
+import '#app/development/handlers/delete';
 
 import '#app/role/handlers/create';
 import '#app/role/handlers/get';
