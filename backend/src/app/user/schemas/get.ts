@@ -18,7 +18,29 @@ const subordinateSchema = {
     firstName: user.firstName,
     lastName: user.lastName,
     roleId: user.roleId,
-    role: roleSchema
+    role: roleSchema,
+    avgPlanPercent: {
+      type: 'number',
+      description: 'Средний плановый процент по всем KPI подчиненного'
+    },
+    avgFactPercent: {
+      type: 'number',
+      description: 'Средний фактический процент по всем KPI подчиненного'
+    }
+  }
+};
+
+const teamKpiAverageSchema = {
+  type: 'object',
+  properties: {
+    avgPlanPercent: {
+      type: 'number',
+      description: 'Средний плановый процент по команде'
+    },
+    avgFactPercent: {
+      type: 'number',
+      description: 'Средний фактический процент по команде'
+    }
   }
 };
 
@@ -46,6 +68,7 @@ export default {
           type: 'array',
           items: subordinateSchema
         },
+        teamKpiAverage: teamKpiAverageSchema,
         createdAt,
         updatedAt
       }
