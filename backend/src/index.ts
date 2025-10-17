@@ -16,6 +16,7 @@ import '#app/kpi/handlers/create';
 import '#app/kpi/handlers/get';
 import '#app/kpi/handlers/list';
 import '#app/kpi/handlers/update';
+import '#app/kpi/handlers/delete';
 
 import '#app/development/handlers/list';
 import '#app/development/handlers/create';
