@@ -7,7 +7,7 @@ import UserRoleAssignment from '#app/userRole/models/userRole';
 import Kpi from '#app/kpi/models/kpi';
 import Competency from '#app/competency/models/competency';
 import DevelopmentPlan from '#app/development/models/development';
-import Role from '#app/role/models/role';
+import Project from '#app/project/models/project';
 
 export type UserAttributes = Attributes<User>;
 export type UserCreationAttributes = CreationAttributes<User>;
@@ -77,13 +77,6 @@ User.init({
 });
 
 db.associate(() => {
-  // User -> Role (многие к одному)
-  User.belongsTo(Role, {
-    foreignKey: 'roleId',
-    as: 'role',
-  });
-
-  // User -> UserRoleAssignment (один ко многим)
   User.hasMany(UserRoleAssignment, {
     foreignKey: 'userGuid',
     as: 'roleAssignments',
@@ -105,6 +98,12 @@ db.associate(() => {
   User.hasMany(DevelopmentPlan, {
     foreignKey: 'userGuid',
     as: 'developmentPlans',
+  });
+
+  // User -> Project (один ко многим)
+  User.hasMany(Project, {
+    foreignKey: 'userGuid',
+    as: 'projects',
   });
 
   // User -> User (самоссылка: менеджер)

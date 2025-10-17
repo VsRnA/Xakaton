@@ -24,6 +24,11 @@ import '#app/role/handlers/create';
 import '#app/role/handlers/get';
 import '#app/role/handlers/list';
 
+import '#app/project/handler/create';
+import '#app/project/handler/get';
+import '#app/project/handler/list';
+import '#app/project/handler/update';
+
 async function bootstrap() {
   env.init();
 
