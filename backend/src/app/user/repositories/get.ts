@@ -90,8 +90,9 @@ export default async (query: GetQuery): Promise<UserWithRelations> => {
     include: [
       {
         model: Role,
-        as: 'role',
-        attributes: ['id', 'name', 'keyWord']
+        as: 'role', // изменено с 'roles' на 'role'
+        attributes: ['id', 'name', 'keyWord'],
+        required: false
       },
       {
         model: User,

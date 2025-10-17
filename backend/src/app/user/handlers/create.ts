@@ -6,6 +6,7 @@ import createUser from '#app/user/repositories/create';
 import createUserSchema from '#app/user/schemas/create';
 import { hashPassword } from "#app/user/services/hashPassword";
 import { ConflictError} from "#lib/http/errors";
+import UserRoleAssigmentCreate from '#app/userRole/repositories/create';
 
 httpTransport.handler.post('/api/user/v1', createUserSchema, async (req) => {
   const { password, roleId, managerGuid, ...userData } = req.body;
@@ -27,6 +28,11 @@ httpTransport.handler.post('/api/user/v1', createUserSchema, async (req) => {
     roleId,
     managerGuid: managerGuid || null,
   });
+
+  await UserRoleAssigmentCreate({
+    userGuid: newUser.guid,
+    roleId,
+  })
 
   return {
     guid: newUser.guid,

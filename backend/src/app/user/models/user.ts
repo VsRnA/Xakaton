@@ -8,6 +8,7 @@ import Kpi from '#app/kpi/models/kpi';
 import Competency from '#app/competency/models/competency';
 import DevelopmentPlan from '#app/development/models/development';
 import Project from '#app/project/models/project';
+import Role from '#app/role/models/role';
 
 export type UserAttributes = Attributes<User>;
 export type UserCreationAttributes = CreationAttributes<User>;
@@ -80,6 +81,11 @@ db.associate(() => {
   User.hasMany(UserRoleAssignment, {
     foreignKey: 'userGuid',
     as: 'roleAssignments',
+  });
+
+  User.belongsTo(Role, {
+    foreignKey: 'roleId',
+    as: 'role'
   });
 
   // User -> Kpi (один ко многим)
